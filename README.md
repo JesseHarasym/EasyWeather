@@ -1,6 +1,6 @@
 # EasyWeather
 
-# A web application that allows you to check the weather to a given destination! Made with React.js, Node.js and MongoDB.
+# A web application that allows you to check the weather to a given destination!
 
 ## Getting Started
 
