@@ -30,12 +30,12 @@ npm install -D nodemon
 
 The key to connect to the mongoDB database can be added under Config as mongoKey.js (ex. Config/mongoKey.js), added like so:
 
-``
+```
 module.exports = {
   mongoURI: "mongodb+srv://<user>:<password>@<dbname>.hhuag.mongodb.net",
   secretOrKey: "secret",
 };
-``
+```
 
 That will add the needed secret key for our passport.js file aswell. You can create your database to gain your mongoURI at: https://www.mongodb.com/try if you don't already have one available.
 
