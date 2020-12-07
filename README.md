@@ -49,7 +49,6 @@ const API = "64ac0950f15df1a9f2d16c0d110a9a3c";
 
 export default API;
 
-git clone https://github.com/JesseHarasym/EasyWeather.git
 ```
 
 This will be all you need to get the API up and running. You can sign up for this API key from the OpenWeatherMap by signing up at: https://openweathermap.org/api
