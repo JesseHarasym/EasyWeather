@@ -1,3 +1,2 @@
-node_modules
+/node_modules
 mongoKey.js
-API_Keys.js
