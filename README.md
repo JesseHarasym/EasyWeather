@@ -58,9 +58,9 @@ You can chose the 5 day forecast option and sign up for the free option, one you
 
 After installing all dependencies and adding your keys, you can run the web app by typing:
 
-```
+``
 npm run dev
-```
+``
 
 This will run the server and client concurrently so that you can easily test it.
 
