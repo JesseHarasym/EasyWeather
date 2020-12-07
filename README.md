@@ -22,9 +22,9 @@ npm install axios boostrap bcryptjs body-parser classnames concurrently express 
 
 #### Install Developer Dependencies
 
-```
+``
 npm install -D nodemon
-```
+``
 
 #### Add MongoDB Key
 
