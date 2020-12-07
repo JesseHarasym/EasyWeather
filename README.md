@@ -16,15 +16,15 @@ git clone https://github.com/JesseHarasym/EasyWeather.git
 
 #### Install Dependencies
 
-``
+```
 npm install axios boostrap bcryptjs body-parser classnames concurrently express is-empty jwt-decode jsonwebtoken moment mongoose passport passport-jwt react-redux react-router-dom redux redux-thunk validator
-``
+```
 
 #### Install Developer Dependencies
 
-``
+```
 npm install -D nodemon
-``
+```
 
 #### Add MongoDB Key
 
