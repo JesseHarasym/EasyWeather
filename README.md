@@ -45,9 +45,7 @@ That will add the needed secret key for our passport.js file aswell. You can cre
 The key to connect to the OpenWeatherMap API can be added by opening the client folder, followed by src, then create the API_Keys.js under the API folder (ex: client/src/API/API_Keys.js) added like so:
 
 ``
-const API = "#######################";
 
-export default API;
 ``
 
 This will be all you need to get the API up and running. You can sign up for this API key from the OpenWeatherMap by signing up at: https://openweathermap.org/api
