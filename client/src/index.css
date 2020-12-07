@@ -1,0 +1,69 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+
+  /** background image */
+  background-image: url("./Images/background.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+.linkStyle {
+  text-decoration: none;
+  color: darkorange;
+}
+.linkStyle:hover {
+  text-decoration: none;
+  color: darkred;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="name"],
+input[type="city"] {
+  background-color: #f6f6f6;
+  padding: 8px;
+  text-align: center;
+  margin: 5px;
+  width: 20rem;
+  border: 2px solid rgb(175, 172, 172);
+  border-radius: 5px 5px 5px 5px;
+}
+
+.textInput{
+  background-color: #f6f6f6;
+  padding: 8px;
+  margin: 5px;
+  width: 20rem;
+  border: 2px solid rgb(175, 172, 172);
+  border-radius: 5px 5px 5px 5px;
+  text-align-last:center;
+}
+
+
+span{
+  color: red;
+}
+
+nav{
+  color: white;
+}
