@@ -1,4 +1,0 @@
-[submodule "EasyWeather"]
-	path = client
-	url = https://github.com/JesseHarasym/EasyWeather
-	branch = main
