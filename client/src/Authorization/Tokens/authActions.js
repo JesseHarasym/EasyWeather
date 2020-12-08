@@ -40,8 +40,11 @@ export const loginUser = (userData) => (dispatch) => {
 
 export const editUser = (userData, history) => (dispatch) => {
   axios
-    .post("/users/edituser", userData)
-    .then((res) => history.push("/home"))
+    .put("/users/edituser", userData)
+    .then((res) => {
+      console.log(res.data.city);
+      history.push("/home");
+    })
     .catch((err) =>
       dispatch({
         type: GET_ERRORS,

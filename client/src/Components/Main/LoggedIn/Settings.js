@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import classnames from "classnames";
+import { withRouter } from "react-router-dom";
 
-import { logoutUser } from "../../../Authorization/Tokens/authActions";
+import { editUser } from "../../../Authorization/Tokens/authActions";
 import Navigation from "./Navigation";
 
 class Settings extends Component {
@@ -11,10 +12,7 @@ class Settings extends Component {
     super(props);
 
     this.state = {
-      name: this.props.auth.user.name,
-      email: this.props.auth.user.email,
-      password: "",
-      password2: "",
+      id: this.props.auth.user.id,
       city: this.props.auth.user.city,
       temperature: this.props.auth.user.temperature,
       errors: {},
@@ -41,14 +39,13 @@ class Settings extends Component {
   onSubmit = (e) => {
     e.preventDefault();
     const User = {
-      name: this.state.name,
-      email: this.state.email,
-      password: this.state.password,
-      password2: this.state.password2,
+      id: this.state.id,
       city: this.state.city,
       temperature: this.state.temperature,
     };
     this.props.editUser(User, this.props.history);
+    this.props.auth.user.city = this.state.city;
+    this.props.auth.user.temperature = this.state.temperature;
   };
 
   render() {
@@ -70,58 +67,6 @@ class Settings extends Component {
               </h5>
             </div>
             <form noValidate onSubmit={this.onSubmit}>
-              <div>
-                <input
-                  placeholder="Name"
-                  onChange={this.onChange}
-                  value={this.state.name}
-                  error={errors.name}
-                  id="name"
-                  type="name"
-                  className={classnames("", { invalid: errors.name })}
-                />
-                <br />
-                <span>{errors.name}</span>
-              </div>
-              <div>
-                <input
-                  placeholder="Email"
-                  onChange={this.onChange}
-                  value={this.state.email}
-                  error={errors.email}
-                  id="email"
-                  type="email"
-                  className={classnames("", { invalid: errors.email })}
-                />
-                <br />
-                <span>{errors.email}</span>
-              </div>
-              <div>
-                <input
-                  placeholder="Password"
-                  onChange={this.onChange}
-                  value={this.state.password}
-                  error={errors.password}
-                  id="password"
-                  type="password"
-                  className={classnames("", { invalid: errors.password })}
-                />
-                <br />
-                <span>{errors.password}</span>
-              </div>
-              <div>
-                <input
-                  placeholder="Re-enter Password"
-                  onChange={this.onChange}
-                  value={this.state.password2}
-                  error={errors.password2}
-                  id="password2"
-                  type="password"
-                  className={classnames("", { invalid: errors.password2 })}
-                />
-                <br />
-                <span>{errors.password2}</span>
-              </div>
               <div>
                 <input
                   placeholder="Preferred City"
@@ -172,7 +117,6 @@ class Settings extends Component {
 
 Settings.propTypes = {
   editUser: PropTypes.func.isRequired,
-  logoutUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
 };
@@ -182,4 +126,4 @@ const mapStateToProps = (state) => ({
   errors: state.errors,
 });
 
-export default connect(mapStateToProps, { logoutUser })(Settings);
+export default connect(mapStateToProps, { editUser })(withRouter(Settings));
