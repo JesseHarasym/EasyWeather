@@ -85,17 +85,25 @@ router.put("/edituser", (req, res) => {
   if (!isValid) {
     return res.status(400).json(errors);
   }
-  var values = req.body;
+  var updatedUser = req.body;
   var user_id = req.params.user_id;
-  User.updateOne({ user_id: user_id }, values, function (err) {
+  User.updateOne({ user_id: user_id }, updatedUser, function (err) {
     if (err) {
       return res
         .status(400)
         .json({ passwordincorrect: "Could not update this user" });
     } else {
-      res.json({
-        city: values.city,
-        temperature: values.temperature,
+      User.findOne({ user_id }).then((user) => {
+        const payload = {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          city: user.city,
+          temperature: user.temperature,
+        };
+        res.json({
+          user: payload,
+        });
       });
     }
   });

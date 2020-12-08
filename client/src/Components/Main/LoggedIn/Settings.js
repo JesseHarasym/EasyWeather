@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import classnames from "classnames";
 import { withRouter } from "react-router-dom";
 
-import { editUser } from "../../../Authorization/Tokens/authActions";
+import { editUser } from "./../../../Authorization/Routes/routeDispatch";
 import Navigation from "./Navigation";
 
 class Settings extends Component {
@@ -12,7 +12,7 @@ class Settings extends Component {
     super(props);
 
     this.state = {
-      id: this.props.auth.user.id,
+      name: this.props.auth.user.name,
       city: this.props.auth.user.city,
       temperature: this.props.auth.user.temperature,
       errors: {},
@@ -39,13 +39,11 @@ class Settings extends Component {
   onSubmit = (e) => {
     e.preventDefault();
     const User = {
-      id: this.state.id,
+      name: this.state.name,
       city: this.state.city,
       temperature: this.state.temperature,
     };
     this.props.editUser(User, this.props.history);
-    this.props.auth.user.city = this.state.city;
-    this.props.auth.user.temperature = this.state.temperature;
   };
 
   render() {
@@ -67,6 +65,19 @@ class Settings extends Component {
               </h5>
             </div>
             <form noValidate onSubmit={this.onSubmit}>
+              <div>
+                <input
+                  placeholder="Name"
+                  onChange={this.onChange}
+                  value={this.state.name}
+                  error={errors.name}
+                  id="name"
+                  type="name"
+                  className={classnames("", { invalid: errors.name })}
+                />
+                <br />
+                <span>{errors.name}</span>
+              </div>
               <div>
                 <input
                   placeholder="Preferred City"

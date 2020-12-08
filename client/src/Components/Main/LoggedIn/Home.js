@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import { logoutUser } from "../../../Authorization/Tokens/authActions";
+import { logoutUser } from "../../../Authorization/Routes/routeDispatch";
 import API from "../../../API/API_Keys";
 import DailyForecast from "../../Others/DailyForecast";
 import Navigation from "./Navigation";
