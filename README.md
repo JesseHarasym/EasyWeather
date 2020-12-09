@@ -14,17 +14,48 @@ What you will need to run this application
 git clone https://github.com/JesseHarasym/EasyWeather.git
 ```
 
-#### Install Dependencies
+#### Install Server Dependencies
+
+First ensure you are in the right directory, you should be under EasyWeather. If not first type:
 
 ``
-npm install axios boostrap bcryptjs body-parser concurrently express is-empty jwt-decode jsonwebtoken moment mongoose passport passport-jwt react-redux react-router-dom redux redux-thunk validator
+cd EasyWeather
+``
+
+And then install the dependencies under this folder, like follows:
+
+``
+npm install axios bcrypt body-parser concurrently express is-empty jsonwebtoken jwt-decode mongoose passport passport-jwt react-redux react-router-dom redux redux-thunk validator
+``
+
+#### Install Client Dependencies
+
+First ensure you are in the right directory, you should be under client. If not then:
+
+``
+cd client
+``
+
+And then install the dependencies under this folder:
+
+``
+npm install axios boostrap jwt-decode react react-dom react-redux react-router-dom redux redux-thunk
 ``
 
 #### Install Developer Dependencies
 
+Change back into the EasyWeather folder:
+
+``
+cd ..
+``
+
+And then install the developer dependencies:
+
 ``
 npm install -D nodemon
 ``
+
 <!-- 
 #### Add MongoDB Key and Passport Key
 
@@ -56,7 +87,7 @@ You can chose the 5 day forecast option and sign up for the free option, one you
 
 ### Running
 
-After installing all dependencies and adding your keys, you can run the web app by typing:
+After installing all dependencies you can run the web app by typing:
 
 ``
 npm run dev
