@@ -17,7 +17,7 @@ git clone https://github.com/JesseHarasym/EasyWeather.git
 #### Install Dependencies
 
 ``
-npm install axios boostrap bcryptjs body-parser classnames concurrently express is-empty jwt-decode jsonwebtoken moment mongoose passport passport-jwt react-redux react-router-dom redux redux-thunk validator
+npm install axios boostrap bcryptjs body-parser concurrently express is-empty jwt-decode jsonwebtoken moment mongoose passport passport-jwt react-redux react-router-dom redux redux-thunk validator
 ``
 
 #### Install Developer Dependencies
@@ -26,9 +26,9 @@ npm install axios boostrap bcryptjs body-parser classnames concurrently express 
 npm install -D nodemon
 ``
 
-#### Add MongoDB Key
+#### Add MongoDB Key and Passport Key
 
-The key to connect to the mongoDB database can be added under Config as mongoKey.js (ex. Config/mongoKey.js), added like so:
+The key to connect to the mongoDB database can be added under Config as keys.js (ex. Config/keys.js), added like so:
 
 ```
 module.exports = {

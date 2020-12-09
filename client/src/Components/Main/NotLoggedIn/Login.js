@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import classnames from "classnames";
 
 import { loginUser } from "../../../Authorization/Routes/routeDispatch";
 import Navigation from "./Navigation";
@@ -17,6 +16,7 @@ class Login extends Component {
     };
   }
 
+  //if user has already been authenticated/has token in header, redirect directly to logged in home page
   componentDidMount() {
     if (this.props.auth.isAuthenticated) {
       this.props.history.push("/home");
@@ -24,9 +24,11 @@ class Login extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    //if user logs in successfully then push to logged in home page
     if (nextProps.auth.isAuthenticated) {
       this.props.history.push("/home");
     }
+    //to recieve errors from server side validator if input fails validation test
     if (nextProps.errors) {
       this.setState({
         errors: nextProps.errors,
@@ -34,20 +36,24 @@ class Login extends Component {
     }
   }
 
+  //set state on input changed by user
   onChange = (e) => {
     this.setState({ [e.target.id]: e.target.value });
   };
 
   onSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault(); //stop default page redirect
+    //create user object that contains the users login data
     const userData = {
       email: this.state.email,
       password: this.state.password,
     };
+    //send login data to route dispatcher to be sent to backend and processed
     this.props.loginUser(userData);
   };
 
   render() {
+    //constant to display error variables passed to the state to be displayed from backend validation
     const { errors } = this.state;
     return (
       <div>
@@ -64,6 +70,7 @@ class Login extends Component {
                   Don't have an account yet?
                   <br />
                 </h5>
+                {/* link to move to registration page */}
                 <Link
                   style={{ marginLeft: "18%" }}
                   to="/register"
@@ -73,6 +80,7 @@ class Login extends Component {
                 </Link>
               </div>
             </div>
+            {/* base form for handling user submits */}
             <form noValidate onSubmit={this.onSubmit} className="mt-2">
               <div>
                 <input
@@ -83,12 +91,10 @@ class Login extends Component {
                   error={errors.email}
                   id="email"
                   type="email"
-                  className={classnames("", {
-                    invalid: errors.email || errors.emailnotfound,
-                  })}
                 />
                 <br />
                 <span>
+                  {/* spans are used to display validation errors */}
                   {errors.email} {errors.emailnotfound}
                 </span>
               </div>
@@ -101,11 +107,7 @@ class Login extends Component {
                   error={errors.password}
                   id="password"
                   type="password"
-                  className={classnames(
-                    "",
-                    { invalid: errors.password || errors.passwordincorrect },
-                    "textAlign: center"
-                  )}
+                  className="textAlign: center"
                 />
                 <br />
                 <span>
@@ -127,15 +129,18 @@ class Login extends Component {
   }
 }
 
+//define types with prop-types package, since we can't define in our constructor
 Login.propTypes = {
   loginUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
 };
 
+//map redux state to props to access it in our component
 const mapStateToProps = (state) => ({
   auth: state.auth,
   errors: state.errors,
 });
 
+//connect our component to our redux store and export it
 export default connect(mapStateToProps, { loginUser })(Login);

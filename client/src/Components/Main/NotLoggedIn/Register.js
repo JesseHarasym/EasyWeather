@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { Link, withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import classnames from "classnames";
 
 import { registerUser } from "../../../Authorization/Routes/routeDispatch";
 import Navigation from "./Navigation";
@@ -21,12 +20,14 @@ class Register extends Component {
     };
   }
 
+  //if user has already been authenticated/has token in header, redirect directly to logged in home page
   componentDidMount() {
     if (this.props.auth.isAuthenticated) {
       this.props.history.push("/home");
     }
   }
 
+  //to recieve errors from server side validator if input fails validation test
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
       this.setState({
@@ -35,12 +36,14 @@ class Register extends Component {
     }
   }
 
+  //set state on input changed by user
   onChange = (e) => {
     this.setState({ [e.target.id]: e.target.value });
   };
 
   onSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault(); //stop default page redirect
+    //create newUser object that contains the users registration data
     const newUser = {
       name: this.state.name,
       email: this.state.email,
@@ -49,10 +52,12 @@ class Register extends Component {
       city: this.state.city,
       temperature: this.state.temperature,
     };
+    //send registration data to route dispatcher to be sent to backend and processed
     this.props.registerUser(newUser, this.props.history);
   };
 
   render() {
+    //constant to display error variables passed to the state to be displayed from backend validation
     const { errors } = this.state;
     return (
       <div>
@@ -69,6 +74,7 @@ class Register extends Component {
                   Already have an account?
                   <br />
                 </h5>
+                {/* link to move to login page */}
                 <Link
                   style={{ marginLeft: "18%" }}
                   to="/login"
@@ -78,6 +84,7 @@ class Register extends Component {
                 </Link>
               </div>
             </div>
+            {/* base form for handling user submits */}
             <form noValidate onSubmit={this.onSubmit}>
               <div>
                 <input
@@ -87,9 +94,9 @@ class Register extends Component {
                   error={errors.name}
                   id="name"
                   type="name"
-                  className={classnames("", { invalid: errors.name })}
                 />
                 <br />
+                {/* spans are used to display validation errors */}
                 <span>{errors.name}</span>
               </div>
               <div>
@@ -100,7 +107,6 @@ class Register extends Component {
                   error={errors.email}
                   id="email"
                   type="email"
-                  className={classnames("", { invalid: errors.email })}
                 />
                 <br />
                 <span>{errors.email}</span>
@@ -113,7 +119,6 @@ class Register extends Component {
                   error={errors.password}
                   id="password"
                   type="password"
-                  className={classnames("", { invalid: errors.password })}
                 />
                 <br />
                 <span>{errors.password}</span>
@@ -126,7 +131,6 @@ class Register extends Component {
                   error={errors.password2}
                   id="password2"
                   type="password"
-                  className={classnames("", { invalid: errors.password2 })}
                 />
                 <br />
                 <span>{errors.password2}</span>
@@ -139,7 +143,6 @@ class Register extends Component {
                   error={errors.city}
                   id="city"
                   type="city"
-                  className={classnames("", { invalid: errors.city })}
                 />
                 <br />
                 <span>{errors.city}</span>
@@ -149,10 +152,7 @@ class Register extends Component {
                   onChange={this.onChange}
                   value={this.state.temperature}
                   id="temperature"
-                  className={
-                    (classnames("", { invalid: errors.temperature }),
-                    "textInput")
-                  }
+                  className="textInput"
                 >
                   <option value="">Preferred Temperature</option>
                   <option value="metric">Celcius</option>
@@ -179,15 +179,18 @@ class Register extends Component {
   }
 }
 
+//define types with prop-types package, since we can't define in our constructor
 Register.propTypes = {
   registerUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
 };
 
+//map redux state to props to access it in our component
 const mapStateToProps = (state) => ({
   auth: state.auth,
   errors: state.errors,
 });
 
-export default connect(mapStateToProps, { registerUser })(withRouter(Register));
+//connect our component to our redux store and export it
+export default connect(mapStateToProps, { registerUser })(Register);

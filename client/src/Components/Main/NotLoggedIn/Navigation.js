@@ -1,7 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+//this is the nagivation bar used for users who are not logged in
 class Navigation extends React.Component {
+  //navigation has three links: Home, Login and Register
   render() {
     return (
       <nav className="navbar bg-dark">

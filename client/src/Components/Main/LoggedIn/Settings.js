@@ -1,16 +1,15 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import classnames from "classnames";
-import { withRouter } from "react-router-dom";
 
 import { editUser } from "./../../../Authorization/Routes/routeDispatch";
 import Navigation from "./Navigation";
 
+//this is settings page for users who are currently logged in and authorized
+//currently you can only change your name, prefered city and prefered temperature units, with plans to expand to email/password
 class Settings extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       name: this.props.auth.user.name,
       city: this.props.auth.user.city,
@@ -19,11 +18,7 @@ class Settings extends Component {
     };
   }
 
-  onLogoutClick = (e) => {
-    e.preventDefault();
-    this.props.logoutUser();
-  };
-
+  //to recieve errors from server side validator if input fails validation test
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
       this.setState({
@@ -32,21 +27,29 @@ class Settings extends Component {
     }
   }
 
+  //set state on input changed by user
   onChange = (e) => {
     this.setState({ [e.target.id]: e.target.value });
   };
 
   onSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault(); //stop default page redirect
+    //create user object that contains the new settings data
+    console.log(this.props.auth.user);
     const User = {
+      id: this.props.auth.user.id,
       name: this.state.name,
+      email: this.props.auth.user.email,
       city: this.state.city,
       temperature: this.state.temperature,
     };
+    console.log(User);
+    //send new data to route dispatcher to be sent to backend and processed
     this.props.editUser(User, this.props.history);
   };
 
   render() {
+    //constant to display error variables passed to the state to be displayed from backend validation
     const { errors } = this.state;
     return (
       <div>
@@ -64,6 +67,7 @@ class Settings extends Component {
                 <br />
               </h5>
             </div>
+            {/* base form for handling user submits */}
             <form noValidate onSubmit={this.onSubmit}>
               <div>
                 <input
@@ -73,9 +77,9 @@ class Settings extends Component {
                   error={errors.name}
                   id="name"
                   type="name"
-                  className={classnames("", { invalid: errors.name })}
                 />
                 <br />
+                {/* spans are used to display validation errors */}
                 <span>{errors.name}</span>
               </div>
               <div>
@@ -86,7 +90,6 @@ class Settings extends Component {
                   error={errors.city}
                   id="city"
                   type="city"
-                  className={classnames("", { invalid: errors.city })}
                 />
                 <br />
                 <span>{errors.city}</span>
@@ -96,10 +99,7 @@ class Settings extends Component {
                   onChange={this.onChange}
                   value={this.state.temperature}
                   id="temperature"
-                  className={
-                    (classnames("", { invalid: errors.temperature }),
-                    "textInput")
-                  }
+                  className="textInput"
                 >
                   <option value="">Preferred Temperature</option>
                   <option value="metric">Celcius</option>
@@ -126,15 +126,18 @@ class Settings extends Component {
   }
 }
 
+//define types with prop-types package, since we can't define in our constructor
 Settings.propTypes = {
   editUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
 };
 
+//map redux state to props to access it in our component
 const mapStateToProps = (state) => ({
   auth: state.auth,
   errors: state.errors,
 });
 
-export default connect(mapStateToProps, { editUser })(withRouter(Settings));
+//connect our component to our redux store and export it
+export default connect(mapStateToProps, { editUser })(Settings);

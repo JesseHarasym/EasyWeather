@@ -5,13 +5,17 @@ import { Link } from "react-router-dom";
 
 import { logoutUser } from "../../../Authorization/Routes/routeDispatch";
 
-class Settings extends Component {
+//this is the navigation bar used for users who are logged in and authorized
+class Navigation extends Component {
+  //allow user to logout from navbar, which will remove token from header and redirect to login page
   onLogoutClick = (e) => {
-    e.preventDefault();
+    e.preventDefault(); //stop default page redirect
     this.props.logoutUser();
   };
 
+  //navigation has two links: Home and Settings, and one button: Logout
   render() {
+    //since we only need to access user information in one place, create constant to access it
     const { user } = this.props.auth;
     return (
       <div>
@@ -36,13 +40,17 @@ class Settings extends Component {
   }
 }
 
-Settings.propTypes = {
+//define types with prop-types package, since we can't define in our constructor
+Navigation.propTypes = {
   logoutUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired,
 };
 
+//map redux state to props to access it in our component
 const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { logoutUser })(Settings);
+//connect our component to our redux store and export it
+export default connect(mapStateToProps, { logoutUser })(Navigation);

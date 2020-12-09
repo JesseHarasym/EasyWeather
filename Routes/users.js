@@ -2,21 +2,25 @@ const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const keys = require("../Config/mongoKey");
+const keys = require("../Config/keys");
 const validateRegisterInput = require("../Validation/register");
 const validateLoginInput = require("../Validation/login");
 const validateSettingsInput = require("../Validation/settings");
 const User = require("../Models/user");
 
+//post route for user registration
 router.post("/register", (req, res) => {
+  //return error if the input data does not meet validation criteria
   const { errors, isValid } = validateRegisterInput(req.body);
   if (!isValid) {
     return res.status(400).json(errors);
   }
+  //look if a user already has the input email, if so throw an error
   User.findOne({ email: req.body.email }).then((user) => {
     if (user) {
       return res.status(400).json({ email: "Email already exists" });
     } else {
+      //if no errors create new user object
       const newUser = new User({
         name: req.body.name,
         email: req.body.email,
@@ -24,10 +28,12 @@ router.post("/register", (req, res) => {
         city: req.body.city,
         temperature: req.body.temperature,
       });
+      //use bcrypt to hash the input password with 10 salt for faster loading (less secure)
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(newUser.password, salt, (err, hash) => {
           if (err) throw err;
           newUser.password = hash;
+          //after hash, save the new user to our database
           newUser
             .save()
             .then((user) => res.json(user))
@@ -38,18 +44,24 @@ router.post("/register", (req, res) => {
   });
 });
 
+//post route for login
 router.post("/login", (req, res) => {
+  //return error if the input data does not meet validation criteria
   const { errors, isValid } = validateLoginInput(req.body);
   if (!isValid) {
     return res.status(400).json(errors);
   }
+  //take email and password from request body
   const email = req.body.email;
   const password = req.body.password;
+  //search document for a user that had the input email
   User.findOne({ email }).then((user) => {
     if (!user) {
       return res.status(404).json({ emailnotfound: "Email was not found" });
     }
+    //use bcrypt.compare to compare the input passwords to the hashed ones in our mongo database
     bcrypt.compare(password, user.password).then((isMatch) => {
+      //if it matches create payload object with user info
       if (isMatch) {
         const payload = {
           id: user.id,
@@ -58,6 +70,7 @@ router.post("/login", (req, res) => {
           city: user.city,
           temperature: user.temperature,
         };
+        //add payload with our passport key in keys.js and our expiration time to create our jwt token
         jwt.sign(
           payload,
           keys.secretOrKey,
@@ -65,6 +78,7 @@ router.post("/login", (req, res) => {
             expiresIn: 15778463,
           },
           (err, token) => {
+            //send token to frontend and let it know the login was successful
             res.json({
               success: true,
               token: "Bearer " + token,
@@ -72,6 +86,7 @@ router.post("/login", (req, res) => {
           }
         );
       } else {
+        //return error if the password entered by the user did not match the database password
         return res
           .status(400)
           .json({ passwordincorrect: "Password is incorrect" });
@@ -80,19 +95,26 @@ router.post("/login", (req, res) => {
   });
 });
 
+//put route for edituser
 router.put("/edituser", (req, res) => {
+  //return error if the input data does not meet validation criteria
   const { errors, isValid } = validateSettingsInput(req.body);
   if (!isValid) {
     return res.status(400).json(errors);
   }
-  var updatedUser = req.body;
-  var user_id = req.params.user_id;
+  //create variable for data from request body, and for user_id to check for match to update
+  const updatedUser = req.body;
+  const user_id = req.params.user_id;
+  //check if database had a user_id that matches the user_id passed in the request
   User.updateOne({ user_id: user_id }, updatedUser, function (err) {
     if (err) {
+      //if user_id does not match any users in database, throw error accordingly
       return res
         .status(400)
-        .json({ passwordincorrect: "Could not update this user" });
+        .json({ userNotFound: "Could not update this user" });
     } else {
+      //if no errors, update user in database
+      //then find user data in that user document with the updated user_id, and save to payload with use data
       User.findOne({ user_id }).then((user) => {
         const payload = {
           id: user.id,
@@ -101,6 +123,7 @@ router.put("/edituser", (req, res) => {
           city: user.city,
           temperature: user.temperature,
         };
+        //send payload with user data to frontend
         res.json({
           user: payload,
         });

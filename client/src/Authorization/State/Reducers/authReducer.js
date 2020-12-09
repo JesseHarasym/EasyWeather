@@ -1,15 +1,12 @@
-import {
-  SET_CURRENT_USER,
-  USER_LOADING,
-  SET_USER_SETTINGS,
-} from "../Others/types";
+//import our current actions to be used for setting state
+import { SET_CURRENT_USER, SET_USER_SETTINGS } from "../Others/actions";
 
 const isEmpty = require("is-empty");
 
+//set initial state object for authorization to be changed dependending on user actions
 const initialState = {
   isAuthenticated: false,
   user: {},
-  loading: false,
 };
 
 export default function authReducer(state = initialState, action) {
@@ -17,18 +14,14 @@ export default function authReducer(state = initialState, action) {
     case SET_CURRENT_USER:
       return {
         ...state,
+        //set authentication and user data according to payload when logging in
         isAuthenticated: !isEmpty(action.payload),
         user: action.payload,
-      };
-    case USER_LOADING:
-      return {
-        ...state,
-        loading: true,
       };
     case SET_USER_SETTINGS:
       return {
         ...state,
-        user: action.payload,
+        user: action.payload, //send user data according to payload when user edits settings
       };
     default:
       return state;
