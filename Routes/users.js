@@ -103,30 +103,24 @@ router.put("/edituser", (req, res) => {
     return res.status(400).json(errors);
   }
   //create variable for data from request body, and for user_id to check for match to update
-  const updatedUser = req.body;
-  const user_id = req.params.user_id;
+  var user = {
+    $set: {
+      name: req.body.name,
+      city: req.body.city,
+      temperature: req.body.temperature,
+    },
+  };
   //check if database had a user_id that matches the user_id passed in the request
-  User.updateOne({ user_id: user_id }, updatedUser, function (err) {
+  User.updateOne({ _id: req.body.id }, user, function (err) {
     if (err) {
       //if user_id does not match any users in database, throw error accordingly
       return res
         .status(400)
         .json({ userNotFound: "Could not update this user" });
     } else {
-      //if no errors, update user in database
-      //then find user data in that user document with the updated user_id, and save to payload with use data
-      User.findOne({ user_id }).then((user) => {
-        const payload = {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          city: user.city,
-          temperature: user.temperature,
-        };
-        //send payload with user data to frontend
-        res.json({
-          user: payload,
-        });
+      //send user data to frontend
+      res.json({
+        user: req.body,
       });
     }
   });
