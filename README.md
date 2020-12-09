@@ -25,7 +25,7 @@ cd EasyWeather
 And then install the dependencies under this folder, like follows:
 
 ``
-npm install axios bcrypt body-parser concurrently express is-empty jsonwebtoken jwt-decode mongoose passport passport-jwt react-redux react-router-dom redux redux-thunk validator
+npm install bcrypt body-parser concurrently express is-empty jsonwebtoken jwt-decode mongoose passport passport-jwt react-redux react-router-dom redux redux-thunk validator
 ``
 
 #### Install Client Dependencies
