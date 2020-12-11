@@ -39,7 +39,7 @@ cd client
 And then install the dependencies under this folder:
 
 ``
-npm install axios boostrap jwt-decode moment react react-dom react-redux react-router-dom redux redux-thunk
+npm install axios bootstrap jwt-decode moment react react-dom react-redux react-router-dom redux redux-thunk
 ``
 
 #### Install Developer Dependencies
