@@ -126,4 +126,21 @@ router.put("/edituser", (req, res) => {
   });
 });
 
+//post route for deleteUser
+router.post("/deleteuser", (req, res) => {
+  User.deleteOne({ _id: req.body.id }, function (err, obj) {
+    if (err) {
+      //if user_id does not match any users in database, throw error accordingly
+      return res
+        .status(400)
+        .json({ userNotDeleted: "This user could not be deleted" });
+    } else {
+      //let frontend know it was deleted succesfuly
+      res.json({
+        deleted: true,
+      });
+    }
+  });
+});
+
 module.exports = router;

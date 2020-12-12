@@ -48,6 +48,16 @@ export const editUser = (userData, history) => (dispatch) => {
     .catch((err) => dispatch(setError(err))); //if error caught, then dispatch error
 };
 
+//deleteUser route that posts through axios to our backend to allow user to delete their accounts
+export const deleteUser = (userData) => (dispatch) => {
+  axios
+    .post("/users/deleteuser", userData)
+    .then((res) => {
+      dispatch(logoutUser());
+    })
+    .catch((err) => dispatch(setError(err))); //if error caught, then dispatch error
+};
+
 //logout defined to allow logout to be used in navbar
 export const logoutUser = () => (dispatch) => {
   localStorage.removeItem("jwtToken");

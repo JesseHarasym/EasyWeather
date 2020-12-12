@@ -7,6 +7,13 @@ import { logoutUser } from "../../../Authorization/Routes/routeDispatch";
 
 //this is the navigation bar used for users who are logged in and authorized
 class Navigation extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      userId: this.props.auth.user._id,
+      errors: {},
+    };
+  }
   //allow user to logout from navbar, which will remove token from header and redirect to login page
   onLogoutClick = (e) => {
     e.preventDefault(); //stop default page redirect

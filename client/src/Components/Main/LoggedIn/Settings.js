@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import { editUser } from "./../../../Authorization/Routes/routeDispatch";
+import { deleteUser } from "./../../../Authorization/Routes/routeDispatch";
 import Navigation from "./Navigation";
 
 //this is settings page for users who are currently logged in and authorized
@@ -27,6 +28,15 @@ class Settings extends Component {
     }
   }
 
+  //button to delete user
+  onDelete = (e) => {
+    e.preventDefault(); //stop default page redirect
+    const User = {
+      id: this.props.auth.user.id,
+    };
+    this.props.deleteUser(User);
+  };
+
   //set state on input changed by user
   onChange = (e) => {
     this.setState({ [e.target.id]: e.target.value });
@@ -35,7 +45,6 @@ class Settings extends Component {
   onSubmit = (e) => {
     e.preventDefault(); //stop default page redirect
     //create user object that contains the new settings data
-    console.log(this.props.auth.user);
     const User = {
       id: this.props.auth.user.id,
       name: this.state.name,
@@ -43,7 +52,6 @@ class Settings extends Component {
       city: this.state.city,
       temperature: this.state.temperature,
     };
-    console.log(User);
     //send new data to route dispatcher to be sent to backend and processed
     this.props.editUser(User, this.props.history);
   };
@@ -117,6 +125,13 @@ class Settings extends Component {
                 >
                   Change Settings
                 </button>
+                <button
+                  onClick={this.onDelete}
+                  className="btn btn-dark mt-4"
+                  style={{ marginLeft: "30%" }}
+                >
+                  Delete this User
+                </button>
               </div>
             </form>
           </div>
@@ -128,6 +143,7 @@ class Settings extends Component {
 
 //define types with prop-types package, since we can't define in our constructor
 Settings.propTypes = {
+  deleteUser: PropTypes.func.isRequired,
   editUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
@@ -140,4 +156,4 @@ const mapStateToProps = (state) => ({
 });
 
 //connect our component to our redux store and export it
-export default connect(mapStateToProps, { editUser })(Settings);
+export default connect(mapStateToProps, { editUser, deleteUser })(Settings);
