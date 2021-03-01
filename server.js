@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const passport = require("passport");
 const users = require("./Routes/users");
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 80;
 
 //setup midleware for body parsing
 app.use(
